@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report</title>
+    <style>
+        
+    </style>
+</head>
+<body>
+    <h1>Report for {{ url }}</h1>
+    {% for result in test_results %}
+    <div>
+        <h2>{{ result.test_type }}</h2>
+        <p>{{ result.message }}</p>
+        <pre>{{ result.details }}</pre>
+    </div>
+    {% endfor %}
+</body>
+</html>

@@ -1,0 +1,51 @@
+{% extends 'base.html' %} {% block normal_content %}
+
+<div class="page">
+  {% block content %}
+  <div class="pageHeader">Load Test</div>
+  <div class="pageRole">Enter the number of requests you would like to send to the URL you are testing.</div>
+  <div class="formContent">
+    <div class="scanbar">
+      <form
+        id="loadTestForm"
+        style="
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        "
+        method="post"
+      >
+        <div class="inputDiv">
+          <div class="inputDiv">
+            {{ form.url.label }} {{ form.url(size=32, class_='input') }}<br />
+            {% for error in form.url.errors %}
+            <span style="color: red">[{{ error }}]</span><br />
+            {% endfor %} {{ form.num_requests.label }} {{
+            form.num_requests(size=5, class_='input') }}<br />
+            {% for error in form.num_requests.errors %}
+            <span style="color: red">[{{ error }}]</span><br />
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="submit-container">
+          <button type="submit">Start Load Test</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  {% endblock %}
+  <div id="summary">
+    <p>Average Response Time: <span id="averageResponseTime"></span> seconds</p>
+    <p>
+      Number of Requests Higher Than Average:
+      <span id="numRequestsHigherThanAverage"></span>
+    </p>
+    <p>Success Percentage: <span id="successPercentage"></span>%</p>
+    <p>Message: <span id="message"></span>%</p>
+  </div>
+
+  <div id="myTable"></div>
+</div>
+
+{% endblock %}

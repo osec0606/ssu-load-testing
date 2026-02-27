@@ -1,0 +1,55 @@
+{% extends 'base.html' %} {% block normal_content %}
+<div class="page">
+  {% block content %}
+  <div class="pageHeader">Multi Load Test</div>
+  <div class="pageRole">If the URLs you want to test have different endpoints, add them to the test using the 'Add URL' button and enter the number of requests you want to send.
+  </div>
+
+  <div class="formContent">
+    <div class="scanbar">
+      <form
+        id="multiLoadTestForm"
+        class="loadTestForm"
+        style="
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        "
+        method="post"
+      >
+        <div id="urlInputsContainer">
+          
+          <div class="inputDiv">
+            <div class="inputDiv" id="urlInput0">
+              URL: <br />
+              <input type="text" size="32" class="input" id="urls0" />
+              <div class="submit-container">
+                <button type="button" onclick="addUrlInput()">Add URL</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br /><br />
+        <div class="inputDiv">
+          <div class="inputDiv" id="urlInput0">
+            Number of Requests: <br />
+            <input
+              type="number"
+              name="num_requests"
+              size="5"
+              class="input"
+              id="num_requests"
+            /><br />
+            <div class="submit-container">
+              <button type="submit">Start Load Test</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  {% endblock %}
+
+  <div id="tablesContainer"></div>
+</div>
+{% endblock %}

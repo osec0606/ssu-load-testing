@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% block normal_content %}
+<div class="page">
+  <div class="pageHeader">Generate Report</div>
+  <div class="pageRole">Enter the URL for which you wish to generate a report.</div>
+
+  <form action="/generate_report" method="post">
+    <div class="scanbar">
+      <div class="inputDiv">
+        <div class="inputDiv">
+    
+
+          <input
+            type="text"
+            name="url"
+            placeholder="Enter URL for report"
+            required
+          />
+          <div class="submit-container">
+            <button type="submit">Generate Report</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Test</title>
+</head>
+<body>
+    <h1>URL Load Test</h1>
+    <form id="loadTestForm">
+        <label for="url">URL:</label>
+        <input type="text" id="url" name="url" required>
+        
+        <label for="num_requests">Number of Requests:</label>
+        <input type="number" id="num_requests" name="num_requests" value="50">
+        
+        <button type="submit">Start Test</button>
+    </form>
+
+    <h2>Results</h2>
+    <div id="results"></div>
+
+    <hr>
+
+    <h1>Multiple Endpoints Load Test</h1>
+    <form id="multiLoadTestForm">
+        <label for="urls">Enter URLs (one per line):</label><br>
+        <textarea id="urls" name="urls" rows="5" cols="50"></textarea><br>
+        
+        <label for="num_requests_multi">Number of Requests:</label>
+        <input type="number" id="num_requests_multi" name="num_requests_multi" value="50">
+        
+        <button type="submit">Start Test</button>
+    </form>
+
+    <h2>Results for Multiple Endpoints</h2>
+    <div id="multiResults"></div>
+
+    <script src="/static/js/loadTest.js"></script>
+    <script src="/static/js/multiLoadTest.js"></script>
+    <h1>Multiple Scenarios Load Test</h1>
+    <form id="multiScenarioLoadTestForm">
+        <div class="scenario">
+            <label for="url">URL:</label>
+            <input type="text" class="url" name="url" required>
+            
+            <label for="num_requests">Number of Requests:</label>
+            <input type="number" class="numRequests" name="num_requests" value="50">
+            
+            <label for="users">Users:</label>
+            <input type="number" class="users" name="users" value="1">
+            
+        </div>
+
+        <!-- Additional scenarios can be added dynamically using JavaScript -->
+
+        <button type="submit">Start Test</button>
+    </form>
+
+    <h2>Results for Multiple Scenarios</h2>
+    <div id="multiScenarioResults"></div>
+
+    <h1>Health Check Monitor</h1>
+    <button id="checkButton">Check Health Status</button>
+    <div id="healthStatus"></div>
+
+    <script>
+        document.getElementById('checkButton').addEventListener('click', function() {
+            
+            fetch('/health_check')
+                .then(response => response.json())
+                .then(data => {
+                    
+                    let healthStatusDiv = document.getElementById('healthStatus');
+                    healthStatusDiv.innerHTML = '';
+
+                    for (let server in data) {
+                        let status = data[server];
+                        let statusText = document.createElement('p');
+                        statusText.textContent = `${server}: ${status}`;
+                        healthStatusDiv.appendChild(statusText);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching health status:', error);
+                });
+        });
+    </script>
+
+    <script src="/static/js/multiScenarioLoadTest.js"></script>
+</body>
+</html>

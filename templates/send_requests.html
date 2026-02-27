@@ -1,0 +1,42 @@
+{% extends 'base.html' %} {% block normal_content %}
+<div class="page">
+  {% block content %}
+  <div class="pageHeader">Multi Scenario Test</div>
+  <div class="pageRole">Enter the URL you wish to test. Select how many users and how many requests you want to test this URL with.</div>
+
+
+  <div class="formContent">
+    <div class="scanbar" style="flex-direction: column">
+      <form id="multiScenarioTest" method="post">
+        <div class="inputDiv">
+          <div class="inputDiv">
+            <div class="inputDiv">
+              {{ form.url.label }}<br />
+              {{ form.url(size=32, class_='input', id='url') }}<br />
+              {% for error in form.url.errors %}
+              <span style="color: red">[{{ error }}]</span><br />
+              {% endfor %} {{ form.num_users.label }}<br />
+              {{ form.num_users(size=5, class_='input', id='num_users') }}<br />
+              {% for error in form.num_users.errors %}
+              <span style="color: red">[{{ error }}]</span><br />
+              {% endfor %} {{ form.num_requests_per_user.label }}<br />
+              {{ form.num_requests_per_user(size=5, class_='input',
+              id='num_requests_per_user') }}<br />
+              {% for error in form.num_requests_per_user.errors %}
+              <span style="color: red">[{{ error }}]</span><br />
+              {% endfor %}
+            </div>
+
+            <div class="submit-container">
+              <button type="submit">Start Load Test</button>
+            </div>
+          </div>
+        </div>
+      </form>
+      {% endblock %}
+      
+    </div>
+  </div>
+  <div id="tablesContainer"></div>
+</div>
+{% endblock %}

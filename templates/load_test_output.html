@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% block normal_content %}
+<body>
+  <div class="page">
+    <div class="pageHeader">K6 Load Test Results</div>
+    <div
+      style="width: fit-content"
+      class="formContent mx-auto text-white loadTestResult"
+    >
+      {% if error_message %}
+      <p>Error: {{ error_message }}</p>
+      {% else %}
+      <p>{{ output_message | safe }}</p>
+      {% endif %} {% if csv_file %}
+      <p class="mt-6">
+        Results CSV File:
+        <a href="{{ url_for('static', filename=csv_file) }}">{{ csv_file }}</a>
+      </p>
+      {% endif %} {% if plot_filename %}
+      <img
+        src="{{ url_for('static', filename=plot_filename) }}"
+        alt="Load Test Plot"
+      />
+      {% endif %}
+
+      <div class="submit-container mt-6">
+        <button>
+          <a style="background: none" href="/k6-load-test">Run another test</a>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var hamburger = document.querySelector(".hamburger");
+    hamburger.addEventListener("click", function () {
+      document.querySelector("body").classList.toggle("active");
+    });
+  </script>
+</body>
+{% endblock %}

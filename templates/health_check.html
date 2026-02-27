@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block normal_content %}
+<div class="page">
+  <h1 style="color: #fff">Health Check Monitor</h1>
+  <button id="checkButton">Check Health Status</button>
+  <div id="healthStatus" style="display: none;"></div> 
+  <script>
+    document.getElementById("checkButton").addEventListener("click", function () {
+      loadingSplash("add");
+      fetch("/health_check", {
+        headers: {
+          Accept: "application/json", 
+        },
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        loadingSplash("remove");
+        displayDot("healthCheck");
+        let healthStatusDiv = document.getElementById("healthStatus");
+        healthStatusDiv.innerHTML = ""; 
+        for (let server in data) {
+          let status = data[server];
+          let statusText = document.createElement("p");
+          statusText.textContent = `${server}: ${status}`;
+          healthStatusDiv.appendChild(statusText);
+        }
+        healthStatusDiv.style.display = "block"; 
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching health status:", error);
+        loadingSplash("remove");
+      });
+    });
+  </script>
+</div>
+{% endblock %}

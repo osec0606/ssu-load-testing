@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block normal_content %}
+<div class="page">
+
+    <div class="pageHeader">
+        K6 Load Test
+    </div>
+    <div class="formContent">
+      <div style="display: flex;color: white;" class="introductions">
+        <p class="text-white"><b>Welcome to our K6 Load-Testing web application, tailored for non-technical users!</b></p>
+        <p class="text-white">Before getting started please follow the instructions below:</p>
+        <p class="text-white">Sign up and get your API token <a class="text-white" href="https://app.k6.io/account/login" target="_blank">here</a>.</p>
+        <p class="text-white">After signin up To get an API token, follow <a class="text-white"  href="https://k6.io/docs/cloud/integrations/token/#:~:text=An%20account-level%20API%20token,Account%20settings%2C%20select%20API%20token" target="_blank">here</a>.</p>
+        <p class="text-white">Enter the number of stages you would like to create.
+          Select how many users and durations you want to test this URL with.</p>
+    </div>
+    
+
+      </div>
+
+        <div style="display: flex;" class="scanbar">
+
+            <form id="requestsForm" method="post" action="/k6-load-test">
+                <div class="inputDiv">
+                <div class="inputDiv">
+                <label for="api_key">API Key:</label><br>
+                <input type="text" id="api_key" name="api_key" required><br><br>
+                <label for="url">Test URL:</label><br>
+                <input type="text" id="url" name="url" required><br>
+                <label for="stages_count">Number of Stages:</label>
+                <input type="number" id="stages_count" name="stages_count" value="3" min="1" required>
+                <div class="submit-container">
+                  <button type="button" onclick="addStages()">Set Stages</button><br><br>
+                </div>
+                </div>
+
+              
+
+                
+
+            
+                </div>
+                </div>
+
+                <div style="display: flex; justify-content: center; width: 100%; flex-direction: column;">
+                  <div  class="stages_container" style="display: flex ; justify-content: center; text-align: center; gap: 10px;" id="stages_container">
+                    
+                    
+                  </div>
+    
+                  <div class="submit-container mx-auto">
+                    <button type="submit">Start Load Test</button>
+                  </div>
+                </div>
+            </form>
+
+              
+              
+
+        </div>
+    </div>
+{% endblock %}

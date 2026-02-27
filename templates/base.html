@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@6/dist/style.css" rel="stylesheet" type="text/css">
+  <script src="https://cdn.jsdelivr.net/npm/simple-datatables@6" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+  <title>Performance Testing Tool</title>
+  <script>
+  function addStages() {
+    const stagesCount = document.getElementById('stages_count').value;
+    const stagesContainer = document.getElementById('stages_container');
+    stagesContainer.innerHTML = ''; // Clear previous stages
+
+    for (let i = 1; i <= stagesCount; i++) {
+      const stageDiv = document.createElement('div');
+      stageDiv.innerHTML = `
+          <label for="duration${i}">Duration for Stage ${i}:</label>
+          <input type="text" id="duration${i}" name="duration${i}" required>
+          <label for="target${i}">Target VUs for Stage ${i}:</label>
+          <input type="number" id="target${i}" name="target${i}" required><br><br>
+      `;
+      stagesContainer.appendChild(stageDiv);
+    }
+  }
+  </script>
+</head>
+
+<body>
+  <div class="header">
+    <div class="menu hamburger">
+      <img src="{{ url_for('static', filename='/css/menu.svg') }}" alt="My Happy SVG" />
+      <div class="menuText">Menu</div>
+
+      <a class="ml-auto" href="/base"><img src="{{ url_for('static', filename='/css/home.svg') }}" alt="My Happy SVG" /></a>
+    </div>
+    
+    <div class="title">
+      SSU LOAD TESTING
+    </div>
+  </div>
+  <div class="loadingSplash">
+    <span class="loader"></span>
+  </div>
+  <div class="container">
+    <div class="wrapper">
+
+      <div class="sidebar">
+        <ul>
+          <li>
+            <a href="/load-test" class="active">
+              <div class="icon"><img src="{{ url_for('static', filename='/css/h.svg') }}" />
+                <div class="item">Load Test </div>
+                <div class="loadTest dot"></div>
+            </a>
+          </li>
+          <li>
+            <a href="/multi-load-test" class="active">
+              <div class="icon"><img src="{{ url_for('static', filename='/css/hh.svg') }}" />
+                <div class="item">
+                  Multi Load Test</div>
+                  <div class="multiLoadTest dot"></div>
+            </a>
+          </li>
+          <li>
+            <a href="/send_requests" class="active">
+              <div class="icon"><img src="{{ url_for('static', filename='/css/hhh.svg') }}" />
+                <div class="item">Multi Scenario Test</div>
+                <div class="multiScenarioTest dot"></div>
+            </a>
+          </li>
+          <li>
+            <a href="/health_check" class="active">
+              <div class="icon"><img src="{{ url_for('static', filename='css/shield-check.svg') }}" />
+                <div class="item">Health Check</div>
+                <div class="healthCheck dot"></div>
+
+            </a>
+          </li>
+          <li>
+            <a href="/generate_report" class="active">
+              <div class="icon"><img src="{{ url_for('static', filename='css/report.svg') }}" />
+
+                <div class="item">Generate Report</div>
+            </a>
+          </li>
+          <li>
+            <a href="/previous_scans" class="active">
+              <div class="icon"><img src="{{ url_for('static', filename='css/prev.svg') }}" />
+
+                <div class="item">Previous Scans</div>
+            </a>
+          </li>
+
+          <li>
+            <a href="/k6-load-test" class="active">
+              <div class="icon"><img src="{{ url_for('static', filename='css/clipboard.svg') }}" />
+                <div class="item">k6-load-test</div>
+            </a>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+
+
+    <div class="content">
+
+      <div id="introductions" class="introductions">
+        <p class="text-white"><b>Welcome to our load-testing web application, tailored for non-technical users!</b></p>
+        <p class="text-white">Load testing is like a rehearsal for your website to handle many visitors at once, ensuring it performs well when it matters most. </p>
+        <p class="text-white">You can follow the order in the menu to start. </p>
+        <p class="text-white">After completing the Load Test, Multi Load Test, Multi Scenario Load Test, and Health Check stages, you can generate your report and access your overall performance results. </p>
+        <p class="text-white">The generated report will provide you with general information about the performance of your system. You can also re-examine the tests you have done before through Previous Scans.</p>
+        <p class="text-white">K6 is a modern and advanced load testing tool. Using the K6 load test tab, you can perform more comprehensive and detailed load testing with simple instructions.</p>
+      </div>
+  
+      {% block normal_content %}{% endblock %}
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footerText">2024©University of Greenwich. All rights reserved.</div>
+  </div>
+  </div>
+</body>
+<script>
+  function loadingSplash(type){
+    const loadingSplash = document.getElementsByClassName('loadingSplash')[0];
+    if (loadingSplash) {
+        if(type == "add"){
+            loadingSplash.classList.add("active");
+        }
+        else if (type == "remove"){
+            loadingSplash.classList.remove("active");
+        }
+        else{
+            return;
+        }
+    }
+};
+
+  var eleman = document.getElementById('introductions');
+  if (window.location.href.includes('/base')) {
+    eleman.style.display = 'flex';  // Show the introductions div
+  } else if (eleman) {
+    eleman.style.display = 'none';  // Hide the introductions div if it exists
+  }
+;
+  window.showIntroductions = true;
+
+function displayDot(type){
+  if(type=="loadTest"){
+    const dot = document.getElementsByClassName("loadTest")[0];
+    if (dot) {
+      dot.classList.add("active");
+      const loadTest = {
+        process: "success"
+      }
+      localStorage.setItem("load-test", JSON.stringify(loadTest))
+    }
+  }
+  else if(type=="multiLoadTest"){
+    const dot2 = document.getElementsByClassName("multiLoadTest")[0];
+    if (dot2) {
+      dot2.classList.add("active");
+      const multiLoadTest = {
+        process: "success"
+      }
+      localStorage.setItem("multiLoadTest", JSON.stringify(multiLoadTest))
+    }
+  }
+  else if(type=="multiScenarioTest"){
+    const dot3 = document.getElementsByClassName("multiScenarioTest")[0];
+    if (dot3) {
+      dot3.classList.add("active");
+      const multiScenarioTest = {
+        process: "success"
+      }
+      localStorage.setItem("multiScenarioTest", JSON.stringify(multiScenarioTest))
+    }
+  }
+  else if(type=="healthCheck"){
+    const dot4 = document.getElementsByClassName("healthCheck")[0];
+    if (dot4) {
+      dot4.classList.add("active");
+      const healthCheck = {
+        process: "success"
+      }
+      localStorage.setItem("healthCheck", JSON.stringify(healthCheck))
+    }
+  }
+    
+};
+
+window.addEventListener('load', function() {
+  const loadTest = JSON.parse(localStorage.getItem('load-test'));
+  const multiLoadTest = JSON.parse(localStorage.getItem('multiLoadTest'));
+  const multiScenarioTest = JSON.parse(localStorage.getItem('multiScenarioTest'));
+  const healthCheck = JSON.parse(localStorage.getItem('healthCheck'));
+
+  if (loadTest && loadTest.process === "success") {
+    displayDot("loadTest");
+  }
+  if (multiLoadTest && multiLoadTest.process === "success") {
+    displayDot("multiLoadTest");
+  }
+  if (multiScenarioTest && multiScenarioTest.process === "success") {
+    displayDot("multiScenarioTest");
+  }
+  if (healthCheck && healthCheck.process === "success") {
+    displayDot("healthCheck");
+  }
+  var eleman = document.getElementById('introductions');
+  if (window.location.href.includes('/base')) {
+    eleman.style.display = 'flex';  
+  } else if (eleman) {
+    eleman.style.display = 'none';  
+  }
+
+
+})
+</script>
+<script src="/static/js/multiLoadTest.js"></script>
+<script>
+  
+  var table = new simpleDatatables.DataTable("#resultsTable");
+</script>
+<script src="/static/js/loadTest.js"></script>
+<script>
+
+function KeyPress(e) {
+      var evtobj = window.event? event : e
+      if (evtobj.keyCode == 82 && evtobj.metaKey && evtobj.shiftKey){
+        localStorage.clear();
+        e.preventDefault();
+      }
+}
+
+
+
+
+document.onkeydown = KeyPress;
+
+  var hamburger = document.querySelector(".hamburger");
+  hamburger.addEventListener("click", function () {
+    document.querySelector("body").classList.toggle("active");
+  });
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('multiScenarioTest').addEventListener('submit', function(e) {
+        e.preventDefault();
+        loadingSplash("add");
+        const url = document.getElementById('url').value;
+        const num_users = document.getElementById('num_users').value;
+        const num_requests_per_user = document.getElementById('num_requests_per_user').value;
+
+        fetch('/send_requests', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                url: url,
+                num_users: parseInt(num_users, 10),
+                num_requests_per_user: parseInt(num_requests_per_user, 10)
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            loadingSplash("remove");
+        displayDot("multiScenarioTest");
+            const tableContainer = document.getElementById('tablesContainer');
+            tableContainer.innerHTML = ''; // Clear previous tables
+
+            // Display the summary message
+            const summaryDiv = document.createElement('div');
+            summaryDiv.className = 'summary';
+            summaryDiv.innerHTML = `<h2>Summary</h2>${data.summary_message.replace(/\n/g, '<br>')}`;
+            tableContainer.appendChild(summaryDiv);
+
+            // Process and display the results
+            if (!Array.isArray(data.results)) {
+                console.error('Results is not an array:', data.results);
+                return;
+            }
+
+            
+            const groupedResults = data.results.reduce((acc, cur) => {
+                (acc[cur.user_id] = acc[cur.user_id] || []).push(cur);
+                return acc;
+            }, {});
+
+            
+            Object.entries(groupedResults).forEach(([userId, userResults]) => {
+                const userResultsContainer = document.createElement('div');
+                userResultsContainer.className = 'user-results-container';
+
+                const userTable = document.createElement('table');
+                userTable.id = `userTable${userId}`;
+                userTable.className = 'dataTable-table';
+
+                const theadHTML = `
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Request Number</th>
+                            <th>Response Time (s)</th>
+                        </tr>
+                    </thead>
+                `;
+                userTable.innerHTML = theadHTML;
+
+                const tbody = document.createElement('tbody');
+                userResults.forEach((request, index) => {
+                    const row = tbody.insertRow();
+                    row.insertCell(0).textContent = userId;
+                    row.insertCell(1).textContent = index + 1; 
+                    row.insertCell(2).textContent = request.response_time.toFixed(3);
+                });
+
+                userTable.appendChild(tbody);
+                userResultsContainer.appendChild(userTable);
+                tableContainer.appendChild(userResultsContainer);
+            });
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            alert('An error occurred while fetching data.');
+        });
+    });
+
+    const form = document.getElementById('requestsForm');
+        
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        
+        const formData = new FormData(form);
+        
+        fetch('/k6-load-test', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            
+            document.body.innerHTML = data;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            
+        });
+    });
+});
+
+</script>
+
+</html>
+
+</html>
